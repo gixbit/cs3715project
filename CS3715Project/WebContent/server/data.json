@@ -1,0 +1,40 @@
+{
+  "Data": {
+    "People": {
+      "Rory": {
+        "ref": "RoryCampbell",
+          "name": "Rory Campbell",
+        "info": "Memorial University",
+        "friends": {},
+        "locations": {}
+      },
+      "John": {
+        "ref": "JohnHollett",
+        "name": "John Hollett",
+        "info": "Memorial University",
+        "friends": {},
+        "locations": {}
+      },
+      "Michael": {
+        "ref": "MichaelSullivan",
+        "name": "Michael Sullivan",
+        "info": "Memorial University",
+        "friends": {},
+        "locations": {}
+      },
+      "Karl": {
+        "ref": "KarlChiasson",
+        "name": "Karl Chiasson",
+        "info": "Memorial University",
+        "friends": {},
+        "locations": {}
+      }
+    },
+    "WebToKey" : {
+      "RoryCampbell": "Rory",
+      "MichaelSullivan": "Michael",
+      "KarlChiasson": "Karl",
+      "JohnHollett": "John"
+    }
+  }
+}

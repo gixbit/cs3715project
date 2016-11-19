@@ -12,9 +12,21 @@ var marker = {};
 var labelMarker = {};
 var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 var labelIndex = 0;
+var http = new XMLHttpRequest();
+var url = "myTutorials.txt";
 
-window.onload = function() {
-	//localStorage.removeItem("People");
+http.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+        var myArr = JSON.parse(this.responseText);
+        myFunction(myArr);
+    }
+};
+http.open("POST", url, true);
+if(http) {
+	alert("test");
+}
+load = function() {
+
 	if(localStorage.getItem("People")) {
 	} else {
         var People = {

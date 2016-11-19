@@ -1,57 +1,32 @@
 /*global localStorage*/
 var fAdd;
-
-window.onload = function() {
-	fAdd = document.getElementById("fAdd");
-	fAdd.addEventListener("click", addFriend);
-    if(localStorage.getItem("People")) {
-
-    } else {
-        var People = {
-    	    Rory: { 
-    	        ref: "RoryCampbell", 
-    	        name: "Rory Campbell", 
-    	        info: "Memorial University",
-    	        friends: {},
-    	        locations: {}
-    	    },
-    	    John: { 
-    	        ref: "JohnHollett", 
-    	        name: "John Hollett", 
-    	        info: "Memorial University",
-    	        friends: {},
-    	        locations: {}
-    	    },
-    	    Michael: { 
-    	        ref: "MichaelSullivan", 
-    	        name: "Michael Sullivan", 
-    	        info: "Memorial University",
-    	        friends: {},
-    	        locations: {}
-    	    },
-    	    Karl: { 
-    	        ref: "KarlChiasson", 
-    	        name: "Karl Chiasson", 
-    	        info: "Memorial University",
-    	        friends: {},
-    	        locations: {}
-    	    }
-    	};
-    	var WebToKey = {
-    	    RoryCampbell: "Rory",
-    	    MichaelSullivan: "Michael",
-    	    KarlChiasson: "Karl",
-    	    JohnHollett: "John"
-    	};
-      	localStorage.setItem("People",JSON.stringify(People));
-    	localStorage.setItem("WebToKey", JSON.stringify(WebToKey));
-    }
-	fListPopulator();
+function load() {
+	var fAdd = document.getElementById("fAdd");
+	fAdd.addEventListener("click", add);
+	var dat = serverGet(fListPopulator);
 };
-
-function fListPopulator() {
+function serverAddFriend(current,target) {
+	var http = new XMLHttpRequest();
+	var fdata = new FormData();
+	fdata.append('add[]',current);
+	fdata.append('add[]',target);
+	http.open('POST','http://localhost:8080');
+	http.send(fdata);
+}
+function serverGet(callback) {
+	var request = new XMLHttpRequest();
+  	request.open("GET", "http://127.0.0.1:8080/server/data.json", false);
+  	request.responseType = 'application/json';
+  	var jObj = undefined;
+	request.onload = function(e) {
+		jObj = JSON.parse(this.response).Data;
+  	};
+	request.send(null);
+	callback(jObj);
+}
+function fListPopulator(data) {
+	var people = data.People;
     var key = window.location.pathname.split('/').pop().split('_').pop().split('.')[0];
-    var people = JSON.parse(localStorage.getItem("People"));
     var fList = document.getElementById("fList");
     var fContainer = document.getElementById("fContainer");
     for (var p in people) {
@@ -69,25 +44,26 @@ function fListFormatter(key,value){
     return str;
 }
 
-function addFriend() {
-    var WebToKey = JSON.parse(localStorage.getItem("WebToKey"));
-    var key = WebToKey[window.location.pathname.split('/').pop().split('_').pop().split('.')[0]];
+function add() {
+	serverGet(addFriend);
+}
+function addFriend(data){
+	var people = data.People;
+    var key = data.WebToKey[window.location.pathname.split('/').pop().split('_').pop().split('.')[0]];
     var fList = document.getElementById("fList");
     var selected = fList.options[fList.selectedIndex].value;
     var fContainer = document.getElementById("fContainer");
-    var people = JSON.parse(localStorage.getItem("People"));
     
     if(people[key].friends[selected]) {
         //Already a Friend
     } else {
-        people[key].friends[selected] = true; 
-        localStorage.setItem("People",JSON.stringify(people));
-        fContainer.innerHTML += formatFriend(selected);
+        people[key].friends[selected] = true;
+        serverAddFriend(key,selected);
+        fContainer.innerHTML += formatFriend(people[selected]);
     }
 }
 
-function formatFriend(key){
-    var entry = JSON.parse(localStorage.getItem("People"))[key];
+function formatFriend(entry){
     var str = "<div class=\"fElem\"><p class=\"fInfo\"><a href=\"profile_"+entry.ref+".html\">"+entry.name+"</a><br>"+entry.info+"</p><img class=\"fImg\" src=\"../../img/profile/"+entry.ref+".png\" width=\"50\" height=\"73.3\"></div>";
     return str;
 }
