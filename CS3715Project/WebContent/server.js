@@ -150,11 +150,10 @@ handleGET = function(file, req, res) {
 			console.log(file,': Not Found');
 	}
 }
-handlePOST = function(request,response) {
+handlePOST = function(req,res) {
 	var form = new multiparty.Form();
 	var weburl = req.url.split('/');
-
-	form.parse(request,function(err,fields,files){
+	form.parse(req,function(err,fields,files){
 		switch(weburl[1]) {
 			case 'profile':
 				for(var d in fields){
@@ -172,13 +171,41 @@ handlePOST = function(request,response) {
 				break;
 			case 'location':
 				for(var d in fields) {
-					var key
+					var key = d.split('|');
+					var entry = data['Data']['People'][key[0]]['locations'][key[1]];
+					console.log(JSON.parse(fields[d][0]));
+					if(entry) {
+						data['Data']['People'][key[0]]['locations'][key[1]].unshift(JSON.parse(fields[d][0]));
+					} else {
+						data['Data']['People'][key[0]]['locations'][key[1]] = [];
+						data['Data']['People'][key[0]]['locations'][key[1]].unshift(JSON.parse(fields[d][0]));
+					}
+					if(data['Data']['People'][key[0]]['locations'][key[1]].length > 5) {
+						data['Data']['People'][key[0]]['locations'][key[1]].pop();
+					}
 				}
 				break;
+			case 'server':
+				for(var d in fields) {
+					switch(fields[d][0]) {
+						case 'reset':
+
+							for(var k in data['Data']['People']){
+								data['Data']['People'][k]['locations'] = {};
+								data['Data']['People'][k]['friends'] = {};
+							}
+							break;
+						default:
+							break;
+					}
+				}
+				break;
+			default:
+				break;
 		}
-		fs.writeFile('server/data.json',JSON.stringify(data),'utf8');
-		response.writeHead(200,{'Action':'Okay'});
-		response.end();
+		fs.writeFileSync('server/data.json',JSON.stringify(data),'utf8');
+		res.writeHead(200,{'Action':'Okay'});
+		res.end();
 	});
 }
 console.log('Server running at http://%s:%s/',ip,port);

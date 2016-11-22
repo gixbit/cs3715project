@@ -39,8 +39,16 @@ locationPopulator = function(data) {
 	var WebToKey = data.WebToKey;
 	var people = data.People;
 	var PageKey = WebToKey[window.location.pathname.split('/').pop().split('_').pop().split('.')[0]];
+	for (var k in marker) {
+		if (marker[k].length > 0) {
+			for(var m in marker[k]){
+				marker[k][m].setMap(null);
+			}
+		}
+	}
 	marker = {};
 	labelMarker = {};
+	labelIndex = 0;
 	var locs = document.getElementById("locations");
 	locs.innerHTML = "<tr><th>Name</th><th>Location</th><th>TimeStamp</th><th>Directions</th></tr>";
 	for(var l in people[PageKey].locations) {
@@ -59,18 +67,33 @@ locationPopulator = function(data) {
 		}
 	}
 };
-function serverGet(callback) {
+function serverGet(callback,pos) {
 	var request = new XMLHttpRequest();
 	request.open('GET', 'http://' + ip + ':8080/server/data.json', true);
 	request.responseType = 'application/json';
 	var jObj = undefined;
 	request.onload = function(e) {
 		jObj = JSON.parse(this.response).Data;
-		callback(jObj);
+		if(pos) {
+			callback(jObj,pos);
+		} else {
+			callback(jObj);
+		}
 	};
 	request.send(null);
 }
-
+function serverAddMarker(fdata) {
+	var http = new XMLHttpRequest();
+	http.open('POST','http://' + ip + ':8080/location');
+	http.onreadystatechange = function() {
+		if(http.readyState === 4){
+			if(http.status === 200) {
+				serverGet(locationPopulator);
+			}
+		}
+	}
+	http.send(fdata);
+}
 function initMap() {
 
 	var start = {lat: 47.5605, lng: -52.7128};
@@ -91,19 +114,19 @@ function menuSel(){
 			break;
 		case "mun":
 			pos = munCoord;
-			newMarker(pos);
+			serverGet(Marker, pos);
 			break;
 		case "avalon":
 			pos = avalonCoord;
-			newMarker(pos);
+			serverGet(Marker, pos);
 			break;
 		case "downtown":
 			pos = dtCoord;
-			newMarker(pos);
+			serverGet(Marker, pos);
 			break;
 		case "village":
 			pos = villageCoord;
-			newMarker(pos);
+			serverGet(Marker, pos);
 			break;
 		default:
 			break;
@@ -124,13 +147,13 @@ function setGpsLoc(position){
 		lat: position.coords.latitude,
 		lng: position.coords.longitude
 	};
-	newMarker(pos);
+	serverGet(Marker, pos);
 }
 
-function newMarker(pos){
+function Marker(data, pos){
 	var form = new FormData();
-	var people = JSON.parse(localStorage.getItem("People"));
-	var WebToKey = JSON.parse(localStorage.getItem("WebToKey"));
+	var people = data.People;
+	var WebToKey = data.WebToKey;
 	var SelectKey = uDropDown.options[uDropDown.selectedIndex].value;
 	var PageKey = WebToKey[window.location.pathname.split('/').pop().split('_').pop().split('.')[0]];
 	var locs = document.getElementById("locations");
@@ -163,18 +186,7 @@ function newMarker(pos){
 	}
 	serverAddMarker(form);
 }
-function serverAddMarker(fData) {
-	var http = new XMLHttpRequest();
-	http.open('POST','http://' + ip + ':8080/location');
-	http.onreadystatechange = function() {
-		if(http.readyState === 4){
-			if(http.status === 200) {
-				serverGet(locationPopulator);
-			}
-		}
-	}
-	http.send(fdata);
-}
+
 function markerMaker(people,PageKey,l,k) {
 	var infowindow = undefined;
 	var mark = undefined;

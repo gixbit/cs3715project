@@ -30,7 +30,7 @@ function serverRemoveFriend(current,target) {
 	var fdata = new FormData();
 	fdata.append('remove',current);
 	fdata.append('remove',target);
-	http.open('POST','http://' + ip + ':8080/');
+	http.open('POST','http://' + ip + ':8080/profile');
 	http.onreadystatechange = function() {
 		if(http.readyState === 4){
 			if(http.status === 200) {
