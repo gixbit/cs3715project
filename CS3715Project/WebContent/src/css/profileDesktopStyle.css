@@ -5,6 +5,9 @@
     #fAdd {
         box-shadow: 5px 5px 8px #444444;
     }
+    #fRemove {
+        box-shadow: 5px 5px 8px #444444;
+    }
     #fList {
         box-shadow: 5px 5px 8px #444444;
     }
@@ -12,7 +15,7 @@
         background-color:#4F95D0;
         box-shadow: 5px 5px 8px #444444;
         border: lightblue solid;
-        border-radius: 0px 5px 5px 5px;
+        border-radius: 0px 0px 5px 5px;
         border-top:0px;
         min-width: 710px;
         max-width: 1250px;
@@ -21,14 +24,14 @@
         background-color: #FFFFB8;
         box-shadow: 5px 5px 8px #444444;
     }
-    .pTitle {
+    #pTitle {
         color: #B987B8;
     }
     .dCopy {
         background-color: lightblue;
         box-shadow: 5px 5px 8px #444444;
     }
-    .dSchedule {
+    #dSchedule {
         background-color: #FFE5D9;
         box-shadow: 5px 5px 8px #444444;
     }

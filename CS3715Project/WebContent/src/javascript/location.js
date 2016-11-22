@@ -8,98 +8,68 @@ const villageCoord = {lat: 47.5350, lng: -52.7509};
 var e;
 var uDropDown;
 var map;
-var marker = {};
-var labelMarker = {};
+var marker;
+var labelMarker;
 var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 var labelIndex = 0;
-var http = new XMLHttpRequest();
-var url = "myTutorials.txt";
-
-http.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-        var myArr = JSON.parse(this.responseText);
-        myFunction(myArr);
-    }
-};
-http.open("POST", url, true);
-if(http) {
-	alert("test");
-}
+var ip;
 load = function() {
-
-	if(localStorage.getItem("People")) {
-	} else {
-        var People = {
-    	    Rory: { 
-    	        ref: "RoryCampbell", 
-    	        name: "Rory Campbell", 
-    	        info: "Memorial University",
-    	        friends: {},
-    	        locations: {}
-    	    },
-    	    John: { 
-    	        ref: "JohnHollett", 
-    	        name: "John Hollett", 
-    	        info: "Memorial University",
-    	        friends: {},
-    	        locations: {}
-    	    },
-    	    Michael: { 
-    	        ref: "MichaelSullivan", 
-    	        name: "Michael Sullivan", 
-    	        info: "Memorial University",
-    	        friends: {},
-    	        locations: {}
-    	    },
-    	    Karl: { 
-    	        ref: "KarlChiasson", 
-    	        name: "Karl Chiasson", 
-    	        info: "Memorial University",
-    	        friends: {},
-    	        locations: {}
-    	    }
-    	};
-    	var WebToKey = {
-    	    RoryCampbell: "Rory",
-    	    MichaelSullivan: "Michael",
-    	    KarlChiasson: "Karl",
-    	    JohnHollett: "John"
-    	}
-    	localStorage.setItem("People",JSON.stringify(People));
-    	localStorage.setItem("WebToKey", JSON.stringify(WebToKey));
-	}
+	ip = location.hostname;
 	e = document.getElementById("locDropDown");
 	e.addEventListener("change", menuSel);
-	uDropDown = document.getElementById("userDropDown");
-	var runThis = function() {
-		var WebToKey = JSON.parse(localStorage.getItem("WebToKey"));
-	    var people = JSON.parse(localStorage.getItem("People"));
-	    var PageKey = WebToKey[window.location.pathname.split('/').pop().split('_').pop().split('.')[0]];
-	    var locs = document.getElementById("locations");
-    	locs.innerHTML = "<tr><th>Name</th><th>Location</th><th>TimeStamp</th><th>Directions</th></tr>";
-	    uDropDown.innerHTML += "<option value=\""+PageKey+"\">"+ people[PageKey].name +"</option>";
-	    for (var p in people[PageKey].friends) {
-	    	uDropDown.innerHTML += "<option value=\""+p+"\">"+ people[p].name +"</option>";
-	    }
-	    for(var l in people[PageKey].locations) {
-	    	if(!marker[l]) {
-				marker[l] = [];
-				labelMarker[l] = labels[labelIndex++ % labels.length];
-	    	}
-	    	if(l != PageKey) {
-		    	for(var k in people[PageKey].locations[l]){
-				    markerMaker(people,PageKey,l,k);		    	}
-	    	} else {
-	    		for(var k in people[PageKey].locations[l]){
-				    locs.innerHTML += people[PageKey].locations[l][k].ele;
-				    markerMaker(people,PageKey,l,k);
-		    	}
-	    	}
-	    }
-	};
-	runThis();
+	serverGet(lPagePopulator);
 };
 
+lPagePopulator = function(data) {
+	var WebToKey = data.WebToKey;
+	var PageKey = WebToKey[window.location.pathname.split('/').pop().split('_').pop().split('.')[0]];
+	var people = data.People;
+	var sheader = document.getElementById('sheader');
+	uDropDown = document.getElementById("userDropDown");
+	uDropDown.innerHTML += "<option value=\""+PageKey+"\">"+ people[PageKey].first + ' ' + people[PageKey].last +"</option>";
+	for (var p in people[PageKey].friends) {
+		uDropDown.innerHTML += "<option value=\""+p+"\">"+ people[p].first + ' ' + people[p].last +"</option>";
+	}
+	sheader.innerHTML += '<img id="profilePic" src="../img/profile/'+people[PageKey].ref+'_th.png">';
+	sheader.innerHTML += '<span id="name">'+ people[PageKey].first + ' ' + people[PageKey].last + '</span>';
+
+	locationPopulator(data);
+}
+locationPopulator = function(data) {
+	var WebToKey = data.WebToKey;
+	var people = data.People;
+	var PageKey = WebToKey[window.location.pathname.split('/').pop().split('_').pop().split('.')[0]];
+	marker = {};
+	labelMarker = {};
+	var locs = document.getElementById("locations");
+	locs.innerHTML = "<tr><th>Name</th><th>Location</th><th>TimeStamp</th><th>Directions</th></tr>";
+	for(var l in people[PageKey].locations) {
+		if(!marker[l]) {
+			marker[l] = [];
+			labelMarker[l] = labels[labelIndex++ % labels.length];
+		}
+		if(l != PageKey) {
+			for(var k in people[PageKey].locations[l]){
+				markerMaker(people,PageKey,l,k);		    	}
+		} else {
+			for(var k in people[PageKey].locations[l]){
+				locs.innerHTML += people[PageKey].locations[l][k].ele;
+				markerMaker(people,PageKey,l,k);
+			}
+		}
+	}
+};
+function serverGet(callback) {
+	var request = new XMLHttpRequest();
+	request.open('GET', 'http://' + ip + ':8080/server/data.json', true);
+	request.responseType = 'application/json';
+	var jObj = undefined;
+	request.onload = function(e) {
+		jObj = JSON.parse(this.response).Data;
+		callback(jObj);
+	};
+	request.send(null);
+}
 
 function initMap() {
 
@@ -108,13 +78,13 @@ function initMap() {
 	  zoom: 12,
 	  center: start,
 	});
-	
+
 }
 
 function menuSel(){
 	var pos;
 	var userSel = e.options[e.selectedIndex].value;
-	
+
 	switch (userSel) {
 		case "gps":
 			getGpsLoc(setGpsLoc); //async operation
@@ -158,84 +128,68 @@ function setGpsLoc(position){
 }
 
 function newMarker(pos){
-    var people = JSON.parse(localStorage.getItem("People"));
-    var WebToKey = JSON.parse(localStorage.getItem("WebToKey"));
-    var SelectKey = uDropDown.options[uDropDown.selectedIndex].value;
-    var PageKey = WebToKey[window.location.pathname.split('/').pop().split('_').pop().split('.')[0]];
+	var form = new FormData();
+	var people = JSON.parse(localStorage.getItem("People"));
+	var WebToKey = JSON.parse(localStorage.getItem("WebToKey"));
+	var SelectKey = uDropDown.options[uDropDown.selectedIndex].value;
+	var PageKey = WebToKey[window.location.pathname.split('/').pop().split('_').pop().split('.')[0]];
 	var locs = document.getElementById("locations");
 	pos = round(pos,4);
 	var winfo = formatInfoWindow(pos,people[SelectKey].name);
-	if(!people[PageKey].locations[SelectKey]){
-		people[PageKey].locations[SelectKey] = [];
-	}
-    if(PageKey == SelectKey) {
-    	people[PageKey].locations[SelectKey].unshift({
-    		ele: formatElement(pos, SelectKey), 
-    		gps: pos,
-    		info: winfo
-    	});
-    } else {
-    	people[PageKey].locations[SelectKey].unshift({
-    		gps: pos,
-    		info: winfo
-    	});
-    }
-    var infowindow = new google.maps.InfoWindow({
-        content: winfo
-    });
-	if(marker[SelectKey]){
-		var mrker = new google.maps.Marker({
-			position: pos,
-			map: map,
-			label: labelMarker[SelectKey],
-			title: people[SelectKey].name
-	    });
-		marker[SelectKey].unshift(mrker);
-		mrker.addListener('click', function() {
-          infowindow.open(map, mrker);
-        });
-		if(marker[SelectKey].length > 5) {
-			var m = marker[SelectKey].pop();
-			m.setMap(null);
-		}
+	if(PageKey == SelectKey) {
+		form.append(PageKey +'|'+ SelectKey,JSON.stringify({
+			ele: formatElement(pos, SelectKey),
+			gps: pos,
+			info: winfo
+		}));
+		/**
+		people[PageKey].locations[SelectKey].unshift({
+			ele: formatElement(pos, SelectKey),
+			gps: pos,
+			info: winfo
+		});
+		*/
 	} else {
-		marker[SelectKey] = [];
-		labelMarker[SelectKey] = labels[labelIndex++ % labels.length];
-		var mrker = new google.maps.Marker({
-			position: pos,
-			map: map,
-			label: labelMarker[SelectKey],
-			title: people[SelectKey].name
-	    });
-		mrker.addListener('click', function() {
-            infowindow.open(map, mrker);
-        });
-		marker[SelectKey].unshift(mrker);
-	}	
-    if(people[PageKey].locations[SelectKey].length > 5) {
-    	var l = people[PageKey].locations[SelectKey].pop();
-    }
-    locs.innerHTML = "<tr><th>Name</th><th>Location</th><th>TimeStamp</th><th>Directions</th></tr>";
-    for(var l in people[PageKey].locations[PageKey]) {
-    	locs.innerHTML += people[PageKey].locations[PageKey][l].ele;
-    }
-    localStorage.setItem("People", JSON.stringify(people));
+		form.append(PageKey +'|'+ SelectKey,JSON.stringify({
+			gps: pos,
+			info: winfo
+		}));
+		/*
+		people[PageKey].locations[SelectKey].unshift({
+			gps: pos,
+			info: winfo
+		});
+		*/
+	}
+	serverAddMarker(form);
+}
+function serverAddMarker(fData) {
+	var http = new XMLHttpRequest();
+	http.open('POST','http://' + ip + ':8080/location');
+	http.onreadystatechange = function() {
+		if(http.readyState === 4){
+			if(http.status === 200) {
+				serverGet(locationPopulator);
+			}
+		}
+	}
+	http.send(fdata);
 }
 function markerMaker(people,PageKey,l,k) {
 	var infowindow = undefined;
 	var mark = undefined;
 	infowindow = new google.maps.InfoWindow({
-        content: people[PageKey].locations[l][k].info
-    });
-    mark = new google.maps.Marker({
+		content: people[PageKey].locations[l][k].info
+	});
+	mark = new google.maps.Marker({
 		position: people[PageKey].locations[l][k].gps,
 		map: map,
 		label: labelMarker[l],
 		title: people[l].name
-    });
+	});
 	mark.addListener('click', function() {
-        infowindow.open(map, mark);
-    });
+		infowindow.open(map, mark);
+	});
 	marker[l].unshift(mark);
 }
 function round(pos,precision) {
@@ -251,6 +205,6 @@ function formatInfoWindow(pos,name) {
 function formatElement(pos,name) {
 	var d = new Date();
 	var time = d.toLocaleString();
-    var str="<tr><th>"+name+"</th><th>"+pos.lat+", "+ pos.lng+"</th><th>"+time+"</th><th>Link</th></tr>";
-    return str;
+	var str="<tr><th>"+name+"</th><th>"+pos.lat+", "+ pos.lng+"</th><th>"+time+"</th><th>Link</th></tr>";
+	return str;
 }
