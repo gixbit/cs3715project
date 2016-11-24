@@ -6,70 +6,104 @@ const avalonCoord = {lat: 47.5613, lng: -52.7541};
 const dtCoord = {lat: 47.5605, lng: -52.7128};
 const villageCoord = {lat: 47.5350, lng: -52.7509};
 var e;
-var uDropDown;
 var map;
 var marker;
 var labelMarker;
 var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 var labelIndex = 0;
 var ip;
+var port;
+var WebToKey;
+var markerUpdate = setInterval(markerTimer, 5000);
+var markerResume = undefined;
+var halt = false;
+
+function resumeTimer() {
+	if(halt) {
+		halt = false;
+	}
+}
+function markerTimer() {
+	if (!halt) {
+    	getGpsLoc(setGpsLoc);
+   	}
+}
+function getTime() {
+	var date = new Date();
+	var hour = (date.getHours() < 10 ? "0" : "") + date.getHours();
+    var min  = (date.getMinutes() < 10 ? "0" : "") + date.getMinutes();
+    var sec = (date.getSeconds() < 10 ? "0" : "") + date.getSeconds();
+    var year = date.getFullYear();
+    var month = ((date.getMonth() + 1) < 10 ? "0" : "") + (date.getMonth() + 1);
+    var day = (date.getDate() < 10 ? "0" : "") + date.getDate();
+    return month+'/'+day+'/'+year+' '+hour+':'+min+':'+sec;
+}
 load = function() {
+	initMap();
 	ip = location.hostname;
+	port = location.port;
 	e = document.getElementById("locDropDown");
-	e.addEventListener("change", menuSel);
 	serverGet(lPagePopulator);
 };
 
 lPagePopulator = function(data) {
-	var WebToKey = data.WebToKey;
+	WebToKey = data.WebToKey;
 	var PageKey = WebToKey[window.location.pathname.split('/').pop().split('_').pop().split('.')[0]];
 	var people = data.People;
 	var sheader = document.getElementById('sheader');
-	uDropDown = document.getElementById("userDropDown");
-	uDropDown.innerHTML += "<option value=\""+PageKey+"\">"+ people[PageKey].first + ' ' + people[PageKey].last +"</option>";
-	for (var p in people[PageKey].friends) {
-		uDropDown.innerHTML += "<option value=\""+p+"\">"+ people[p].first + ' ' + people[p].last +"</option>";
-	}
 	sheader.innerHTML += '<img id="profilePic" src="../img/profile/'+people[PageKey].ref+'_th.png">';
 	sheader.innerHTML += '<span id="name">'+ people[PageKey].first + ' ' + people[PageKey].last + '</span>';
 
 	locationPopulator(data);
 }
 locationPopulator = function(data) {
-	var WebToKey = data.WebToKey;
 	var people = data.People;
 	var PageKey = WebToKey[window.location.pathname.split('/').pop().split('_').pop().split('.')[0]];
-	for (var k in marker) {
-		if (marker[k].length > 0) {
-			for(var m in marker[k]){
-				marker[k][m].setMap(null);
-			}
-		}
+	for (var j in marker) {
+		try{
+			marker[j].setMap(undefined);
+		}catch(err){}
 	}
 	marker = {};
 	labelMarker = {};
 	labelIndex = 0;
 	var locs = document.getElementById("locations");
 	locs.innerHTML = "<tr><th>Name</th><th>Location</th><th>TimeStamp</th><th>Directions</th></tr>";
-	for(var l in people[PageKey].locations) {
-		if(!marker[l]) {
-			marker[l] = [];
-			labelMarker[l] = labels[labelIndex++ % labels.length];
-		}
-		if(l != PageKey) {
-			for(var k in people[PageKey].locations[l]){
-				markerMaker(people,PageKey,l,k);		    	}
-		} else {
-			for(var k in people[PageKey].locations[l]){
-				locs.innerHTML += people[PageKey].locations[l][k].ele;
-				markerMaker(people,PageKey,l,k);
+	for(var p in people) {
+		if(p == PageKey || people[PageKey]['friends'][p]){
+
+			var l = people[p]['locations'];
+			if(!marker[p]) {
+				marker[p] = undefined;
+				labelMarker[p] = labels[labelIndex++ % labels.length];
+			}
+			if(people[p]['locations']){
+				locs.innerHTML += l.ele;
+				markerMaker(people,p);
 			}
 		}
 	}
 };
+function markerMaker(people,p) {
+	var infowindow = undefined;
+	var mark = undefined;
+	infowindow = new google.maps.InfoWindow({
+		content: people[p].locations.info
+	});
+	mark = new google.maps.Marker({
+		position: people[p].locations.gps,
+		map: map,
+		label: labelMarker[p],
+		title: people[p].first + ' ' + people[p].last
+	});
+	mark.addListener('click', function() {
+		infowindow.open(map, mark);
+	});
+	marker[p] = mark;
+}
 function serverGet(callback,pos) {
 	var request = new XMLHttpRequest();
-	request.open('GET', 'http://' + ip + ':8080/server/data.json', true);
+	request.open('GET', 'http://' + ip + ':'+ port + '/server/data', true);
 	request.responseType = 'application/json';
 	var jObj = undefined;
 	request.onload = function(e) {
@@ -84,7 +118,7 @@ function serverGet(callback,pos) {
 }
 function serverAddMarker(fdata) {
 	var http = new XMLHttpRequest();
-	http.open('POST','http://' + ip + ':8080/location');
+	http.open('POST','http://' + ip + ':'+ port + '/location');
 	http.onreadystatechange = function() {
 		if(http.readyState === 4){
 			if(http.status === 200) {
@@ -104,34 +138,6 @@ function initMap() {
 
 }
 
-function menuSel(){
-	var pos;
-	var userSel = e.options[e.selectedIndex].value;
-
-	switch (userSel) {
-		case "gps":
-			getGpsLoc(setGpsLoc); //async operation
-			break;
-		case "mun":
-			pos = munCoord;
-			serverGet(Marker, pos);
-			break;
-		case "avalon":
-			pos = avalonCoord;
-			serverGet(Marker, pos);
-			break;
-		case "downtown":
-			pos = dtCoord;
-			serverGet(Marker, pos);
-			break;
-		case "village":
-			pos = villageCoord;
-			serverGet(Marker, pos);
-			break;
-		default:
-			break;
-	}
-}
 
 function getGpsLoc(callback){
 	if (navigator.geolocation){
@@ -153,70 +159,46 @@ function setGpsLoc(position){
 function Marker(data, pos){
 	var form = new FormData();
 	var people = data.People;
-	var WebToKey = data.WebToKey;
-	var SelectKey = uDropDown.options[uDropDown.selectedIndex].value;
 	var PageKey = WebToKey[window.location.pathname.split('/').pop().split('_').pop().split('.')[0]];
 	var locs = document.getElementById("locations");
-	pos = round(pos,4);
-	var winfo = formatInfoWindow(pos,people[SelectKey].name);
-	if(PageKey == SelectKey) {
-		form.append(PageKey +'|'+ SelectKey,JSON.stringify({
-			ele: formatElement(pos, SelectKey),
-			gps: pos,
-			info: winfo
-		}));
-		/**
-		people[PageKey].locations[SelectKey].unshift({
-			ele: formatElement(pos, SelectKey),
-			gps: pos,
-			info: winfo
-		});
-		*/
-	} else {
-		form.append(PageKey +'|'+ SelectKey,JSON.stringify({
-			gps: pos,
-			info: winfo
-		}));
-		/*
-		people[PageKey].locations[SelectKey].unshift({
-			gps: pos,
-			info: winfo
-		});
-		*/
-	}
+	pos = round(pos,2);
+	var winfo = formatInfoWindow(pos, people[PageKey]);
+	form.append(PageKey,JSON.stringify({
+		ele: formatElement(pos, people[PageKey]),
+		gps: pos,
+		info: winfo
+	}));
 	serverAddMarker(form);
 }
-
-function markerMaker(people,PageKey,l,k) {
-	var infowindow = undefined;
-	var mark = undefined;
-	infowindow = new google.maps.InfoWindow({
-		content: people[PageKey].locations[l][k].info
-	});
-	mark = new google.maps.Marker({
-		position: people[PageKey].locations[l][k].gps,
-		map: map,
-		label: labelMarker[l],
-		title: people[l].name
-	});
-	mark.addListener('click', function() {
-		infowindow.open(map, mark);
-	});
-	marker[l].unshift(mark);
+function centerOn(p) {
+	map.setCenter(marker[WebToKey[p]].getPosition());
+	for (var j in marker) {
+		try{
+			if(j != WebToKey[p]){
+				marker[j].setMap(undefined);
+			} else {
+				halt = true;
+				clearTimeout(markerResume);
+				markerResume = setTimeout(resumeTimer, 10000);
+				marker[j].setMap(map);
+			}
+		}catch(err){}
+	}
 }
+
 function round(pos,precision) {
 	pos.lat = (Math.round(pos.lat * Math.pow(10,precision))/Math.pow(10,precision));
 	pos.lng = (Math.round(pos.lng * Math.pow(10,precision))/Math.pow(10,precision));
 	return pos;
 }
-function formatInfoWindow(pos,name) {
-	var d = new Date().toLocaleString();
-	var s = "<p class=\"winfo\">Name: "+name+"</p>"+"<p class=\"winfo\">Time: "+d+"</p>"+"<p class=\"winfo\">Location: "+pos.lat+", "+pos.lng+"</p>";
+function formatInfoWindow(pos, person) {
+	var d = getTime();
+	var s = "<p class=\"winfo\">Name: "+person.first+' '+person.last+"</p>"+"<p class=\"winfo\">Time: "+d+"</p>"+"<p class=\"winfo\">Location: "+pos.lat+", "+pos.lng+"</p>";
 	return s;
 }
-function formatElement(pos,name) {
-	var d = new Date();
+function formatElement(pos,person) {
+	var d = getTime();
 	var time = d.toLocaleString();
-	var str="<tr><th>"+name+"</th><th>"+pos.lat+", "+ pos.lng+"</th><th>"+time+"</th><th>Link</th></tr>";
+	var str='<tr><th>'+person.first+' '+person.last+'</th><th>'+pos.lat+', '+ pos.lng+'</th><th>'+time+'</th><th><button onclick=centerOn("'+person.ref+'")>Center</button></th></tr>';
 	return str;
 }

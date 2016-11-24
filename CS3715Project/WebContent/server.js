@@ -1,14 +1,12 @@
 var http = require("http");
 var fs = require("fs");
-var express = require("express");
 var util = require("util");
 var multiparty = require('multiparty');
 var stringify = require('stringifier');
 var path = require('path');
-var app = express();
 var ip = '127.0.0.1';
-var port = 8080;
-var data = JSON.parse(fs.readFileSync('server/data.json','utf8'));
+var port = 3337;
+var data = JSON.parse(fs.readFileSync('server/data','utf8'));
 var fileExtensions = {
 	'.html':'text/html',
 	'.css':'text/css',
@@ -28,28 +26,34 @@ logTime = function(date) {
     var day = (date.getDate() < 10 ? "0" : "") + date.getDate();
     return year+month+day+hour+min+sec;
 }
-fs.writeFile('server/backup'+logTime()+'.json',JSON.stringify(data),'utf8');
+fs.writeFile('server/backup' + logTime() + '.json', JSON.stringify(data),'utf8');
 
 http.createServer(function(req, res) {
 	var file = __dirname + req.url;
-	if(req.method == 'POST'){
-		handlePOST(req,res);
-	} else if(req.method =='GET') {
-		if(req.url === '/') {
-			index = __dirname + '/index.html';
-			fs.exists(index, function(exists) {
-				if(exists) {
-					var f = fs.createReadStream(index);
-					res.writeHead(200, { 'Content-Type': fileExtensions['.html']});
-					f.pipe(res);
-					console.log('Served: ' + index + ', Content-Type: ' + fileExtensions['.html']);
-				}
-				else
-					console.log(file,': Not Found');
-			});
-		} else
-			handleGET(file, req, res);
-	}
+	if (req.url === '/favicon.ico') {
+		var f = fs.createReadStream(file);
+		f.pipe(res);
+	} else
+		if(req.method == 'POST'){
+			handlePOST(req,res);
+		} else if(req.method =='GET') {
+			if(req.url === '/') {
+				index = __dirname + '/index.html';
+				fs.exists(index, function(exists) {
+					if(exists) {
+						var f = fs.createReadStream(index);
+						res.writeHead(200, { 'Content-Type': fileExtensions['.html']});
+						f.pipe(res);
+						console.log('Served: ' + index + ', Content-Type: ' + fileExtensions['.html']);
+					}
+					else
+						console.log(file,': Not Found');
+				});
+			} else
+				handleGET(file, req, res);
+}
+}).on('connection', function(socket) {
+  socket.setTimeout(8000);
 }).listen(port);
 handleGET = function(file, req, res) {
 	console.log('Requested: ' + req.url);
@@ -57,8 +61,15 @@ handleGET = function(file, req, res) {
 	//console.log(weburl);
 	switch(weburl[0]+weburl[1]){
 		case 'profile':
-			var profile = 'src/html/profile.html';
-			var ext = path.extname(profile);
+			var ext = path.extname(req.url);
+			var profile = 'src/html/';
+			if(ext == '.appcache')
+				profile += weburl[2];
+			else {
+				profile += 'profile.html';
+
+			}
+			ext = path.extname(profile);
 			var type = fileExtensions[ext];
 			fs.exists(profile, function(exists) {
 				if(exists) {
@@ -134,7 +145,7 @@ handleGET = function(file, req, res) {
 		case 'server':
 			var server = 'server/' + weburl[2];
 			var ext = path.extname(server);
-			var type = fileExtensions[ext];
+			var type = 'text/html';
 			fs.exists(server, function(exists) {
 				if(exists) {
 					var f = fs.createReadStream(server);
@@ -171,27 +182,15 @@ handlePOST = function(req,res) {
 				break;
 			case 'location':
 				for(var d in fields) {
-					var key = d.split('|');
-					var entry = data['Data']['People'][key[0]]['locations'][key[1]];
-					console.log(JSON.parse(fields[d][0]));
-					if(entry) {
-						data['Data']['People'][key[0]]['locations'][key[1]].unshift(JSON.parse(fields[d][0]));
-					} else {
-						data['Data']['People'][key[0]]['locations'][key[1]] = [];
-						data['Data']['People'][key[0]]['locations'][key[1]].unshift(JSON.parse(fields[d][0]));
-					}
-					if(data['Data']['People'][key[0]]['locations'][key[1]].length > 5) {
-						data['Data']['People'][key[0]]['locations'][key[1]].pop();
-					}
+					data['Data']['People'][d]['locations'] = JSON.parse(fields[d][0]);
 				}
 				break;
 			case 'server':
 				for(var d in fields) {
 					switch(fields[d][0]) {
 						case 'reset':
-
 							for(var k in data['Data']['People']){
-								data['Data']['People'][k]['locations'] = {};
+								data['Data']['People'][k]['locations'] = undefined;
 								data['Data']['People'][k]['friends'] = {};
 							}
 							break;
@@ -203,7 +202,7 @@ handlePOST = function(req,res) {
 			default:
 				break;
 		}
-		fs.writeFileSync('server/data.json',JSON.stringify(data),'utf8');
+		fs.writeFileSync('server/data',JSON.stringify(data),'utf8');
 		res.writeHead(200,{'Action':'Okay'});
 		res.end();
 	});

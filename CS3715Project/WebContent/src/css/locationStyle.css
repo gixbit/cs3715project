@@ -3,15 +3,11 @@ html {
 }
 
 body {
-	
+
 	margin: 0px;
 	color: white;
 	font-family: Lucida Console;
 }
-#locationTest{
-    text-align: center;
-}
-
 
 #width{
 	width: 100%;
@@ -21,6 +17,9 @@ body {
 	background-color: #4F95D0;
     border-bottom-left-radius: 7px;
 	border-bottom-right-radius: 7px;
+    border-top: 0px;
+    border-color: white;
+    border-style: solid;
 }
 
 .navbar {
@@ -50,36 +49,37 @@ li a {
 
 .top section{
     box-sizing: border-box;
-    border-bottom: 7px #333 solid;
-    border-left: 7px #333 solid;
-    border-right: 7px #333 solid;
+    border-bottom: 4px #333 solid;
+    border-left: 4px #333 solid;
+    border-right: 4px #333 solid;
     margin-left: 15%;
     margin-right: 15%;
+    padding-bottom: 53px;
     border-radius: 0px 0px 7px 7px;
-    background-color: #339966 ;
+    border-color: #EEE;
+    background-color: #316498;
 }
 
 #profilePic {
+    float: left;
     vertical-align: middle;
 }
 
 #name {
     padding-top: 42px;
-    display: inline;
+    display: block;
     font-size: 48px;
-    margin-left: 5%;
-    margin-right: 5%;
+    text-align: center;
 }
 
 #map {
     height:400px;
-    margin-top:20px;
+    margin-top: 50px;
     display: block;
 	margin-left: auto;
 	margin-right: auto;
 	width: 70%;
-	border-top-left-radius: 7px;
-	border-top-right-radius: 7px;
+	border-radius: 7px;
 }
 
 #userDropDown{
@@ -103,16 +103,23 @@ li a {
 }
 
 #locations {
+    margin-top:5%;
 	margin-left: auto;
     margin-right: auto;
     width: 70%;
-    border: 2px #333 solid;
-    border-top:5px #333 solid;
-    border-left:5px #333 solid;
-    border-right:5px #333 solid;
+    border: 5px #111 solid;
+    border-top:5px #111 solid;
+    border-left:5px #111 solid;
+    border-right:5px #111 solid;
     border-top-left-radius: 7px;
     border-top-right-radius: 7px;
+    padding: 5px 5px 5px 5px;
     background-color: #333;
+}
+
+table tr, th {
+    border: 3px solid black;
+    padding: 5px;
 }
 
 .winfo {

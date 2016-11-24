@@ -3,12 +3,14 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>3715 Social Network</title>
-		<link rel="stylesheet" type="text/css" href="css/landingStyle.css">
+		<link rel="stylesheet" type="text/css" href="../css/landingStyle.css">
+		<script src="javascript/landing.js"></script>
+
 	</head>
-	<body>
+	<body onload="load()">
 		<nav>
             <ul class=navbar>
-			    <li class=navleft><a href="/">Home</a></li>
+			    <li class=navleft><a href="index.html">Home</a></li>
 	        </ul>
         </nav>
 
@@ -24,15 +26,10 @@
 			connect various students of the CS under one site. You will be able
 			to view each others profiles and see their location. Some brief information
 			about each of the members and their friends.</p>
-			<p>
-				<table>
-					<tr>
-						<th><a class="preview" href="profile/JohnHollett"><img class="profiles" src="img/profile/JohnHollett.png" width="150" height="220"></a></th>
-						<th><a class="preview" href="profile/KarlChiasson"><img class="profiles" src="img/profile/KarlChiasson.png" width="150" height="220"></a></th>
-						<th><a class="preview" href="profile/RoryCampbell"><img class="profiles" src="img/profile/RoryCampbell.png" width="150" height="220"></a></th>
-						<th><a class="preview" href="profile/MichaelSullivan"><img  class="profiles" src="img/profile/MichaelSullivan.png" width="150" height="220"></a></th>
-					</tr>
-				</table>
+			<p id="people">
+			<!--
+			<a class="preview" href="profile/JohnHollett"><img class="profiles" src="img/profile/JohnHollett.png" width="150" height="220"></a>
+			-->
 			</p>
 			</section>
 		</div>

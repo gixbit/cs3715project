@@ -6,7 +6,7 @@
 		<link rel="stylesheet" type="text/css" href="../css/locationStyle.css">
         <script src="../javascript/location.js"></script>
     </head>
-    <body onload="load()">
+    <body>
         <nav>
             <ul class=navbar>
 			    <li class=navleft><a href="/">Home</a></li>
@@ -14,30 +14,16 @@
         </nav>
 
 
-        <div id="width">
 
+        <div id="width">
         <header class="top">
             <section id='sheader'>
 
             </section>
         </header>
-        <div id='test'></div>
         <div class="container">
             <div id="map"></div>
-            <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBYdRy4bCagFm9gKw9J-7BForVmC7x9Cg8&callback=initMap"></script>
-
-            <select id="userDropDown">
-                <option value="default">Select User</option>
-            </select>
-
-            <select id="locDropDown">
-                <option value="default">Select Location</option>
-                <option value="mun">MUN</option>
-                <option value="avalon">Avalon Mall</option>
-                <option value="downtown">Downtown</option>
-                <option value="village">Village Mall</option>
-                <option value="gps">GPS</option>
-            </select>
+            <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBYdRy4bCagFm9gKw9J-7BForVmC7x9Cg8&callback=load"></script>
 
             <table id="locations"></table>
         </div>

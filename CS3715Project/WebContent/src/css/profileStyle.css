@@ -34,7 +34,7 @@ body {
 #fList {
     display:block;
     height:35px;
-    width:200px;
+    width:120px;
     float:right;
     margin-right: 25px;
 }
@@ -117,7 +117,6 @@ nav a {
 }
 .fText {
     font-size: 24px;
-    float: top;
     display:block;
     font-family: cursive;
 }
