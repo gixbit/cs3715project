@@ -1,0 +1,254 @@
+
+#reset {
+    margin-left: auto;
+    margin-right: auto;
+    width: 240px;
+    height: 60px;
+}
+body {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top:0;
+}
+
+#fContainer {
+    display: block;
+    overflow: auto;
+    border-top: 5px solid lightblue;
+    height: 100%;
+}
+
+#fAdd{
+    display: block;
+    float: right;
+    height:35px;
+    margin-right: 10px;
+    padding: 2px 25px 0px 25px;
+}
+#fRemove{
+    display: block;
+    float: right;
+    height:35px;
+    margin-right: 10px;
+    padding: 2px 25px 0px 25px;
+}
+#fList {
+    display:block;
+    height:35px;
+    width:140px;
+    float:right;
+    margin-right: 10px;
+}
+
+ul.lNavBar {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    min-width: 400px;
+    background-color: #333;
+    font-family: Lucida Console;
+}
+li.lNavItemRight {
+    float: right;
+}
+li.lNavItemRight a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+li.lNavItemRight a:hover:not(.active) {
+    background-color: #006679;
+}
+
+li.lNavItemRight a.active {
+    background-color: #00B9F1;
+}
+li.lNavItemLeft a:hover:not(.active) {
+    background-color: #006679;
+}
+
+li.lNavItemLeft {
+    float: left;
+}
+li.lNavItemLeft a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+li.lNavItemLeft a.active {
+    background-color: #00B9F1;
+}
+
+.main {
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    padding:15px;
+    min-width: 690px;
+    max-width: 1000px;
+}
+.dTop {
+    display: block;
+    position: relative;
+    height: 250px;
+}
+#dImg {
+    display: inline-block;
+    position: absolute;
+    right: 0;
+    height: 100%;
+    width: 30%;
+}
+.pImg {
+    position: absolute;
+    display: block;
+    top: 25%;
+    right: 10%;
+    /* left: 70%; */
+}
+#dInfo {
+    display: inline-block;
+    position: absolute;
+    left: 0;
+    width: 70%;
+    height: 100%;
+}
+
+#dTitle {
+    display: inline-block;
+    position: absolute;
+    text-align: center;
+    width: 100%;
+}
+#pTitle {
+    margin-top: 1%;
+    margin-bottom: 0px;
+}
+#pInfo {
+    position: absolute;
+    vertical-align: middle;
+    padding-left: 0px;
+    margin-left: 20px;
+    top: 20%;
+}
+.pElem {
+    list-style-type: none;
+    text-align: left;
+    margin-left: 0px;
+    padding: 2px 5px 2px 5px;
+}
+#pElemLoc {
+    list-style-type: none;
+    text-align: left;
+    margin-left: 0px;
+    padding: 2px 5px 2px 5px;
+}
+#pElemLoc a:hover {
+    text-decoration: underline;
+}
+#pElemLoc a {
+    text-decoration: none;
+}
+.dFriend {
+    min-width: 525px;
+    display: block;
+    border-bottom: 5px solid lightblue;
+}
+#dCopy {
+    height: 100%;
+    margin-top: 550px;
+    display: block;
+    left: 0px;
+    min-height: 50px;
+    position: relative;
+    text-align: center;
+}
+.pCopy {
+    margin-top: 20px;
+    width: 100%;
+    margin-bottom: 20px;
+}
+#dSchedule {
+    overflow-y: scroll;
+    overflow-x: auto;
+    display: block;
+    max-width: 225px;
+    max-height: 32.25em;
+    height: 100%;
+    width: 100%;
+    padding-right: 15px;
+    float: right;
+    margin-bottom: 20px;
+    margin-left: auto;
+    padding-left: 1.5%;
+}
+.pSDay {
+    margin-left: 5%;
+    margin-bottom: 20px;
+    list-style-type: square;
+}
+.PSDay, ul {padding-left: 20px;}
+li.pSDContent {
+    padding-right: 5px;
+}
+
+.fText {
+    padding-bottom: 6px;
+    display:block;
+}
+.fElem {
+    position: relative;
+    list-style-type: none;
+    text-align: left;
+    padding-top: 5px;
+    padding-bottom: 2.5px;
+    margin-top: 2px;
+    margin-right: 25px;
+    float:left;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    min-height: 80px;
+    max-width: 450px;
+    width: 100%;
+}
+.fBody {
+    position: absolute;
+    margin-left: 10px;
+    margin-right: 10px;
+    display: inline-block;
+    max-width: 335px;
+    width: 100%;
+    height: 100%;
+}
+.fBody a:hover {
+}
+.fInfo {
+    margin:auto;
+    width: 100%;
+    position: relative;
+    max-height: 50px;
+    overflow-y: auto;
+}
+.sList{
+    list-style-type: circle;
+}
+.sElem {
+    list-style-type: circle;
+}
+.pSchedule {
+    text-align: center;
+}
+.fImg {
+    margin-right: 25px;
+    margin-left: 25px;
+    float: right;
+    position: absolute;
+    right: 0px;
+}

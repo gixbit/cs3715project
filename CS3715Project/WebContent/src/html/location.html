@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+		<title>3715 Social Network</title>
+		<link rel="stylesheet" type="text/css" href="../css/locationStyle.css">
+        <script src="../javascript/location.js"></script>
+    </head>
+    <body>
+        <ul class="lNavBar">
+            <li class="lNavItemLeft"><a href="/">Home</a></li>
+            <li id='aProfile' class="lNavItemLeft"><a href="/">Profile</a></li>
+            <li id='aLocation' class="lNavItemLeft"><a class="active" href="/">Location</a></li>
+            <li class="lNavItemRight"><a href="/server/admin">Server</a></li>
+        </ul>
+
+        <div id="width">
+        <header class="top">
+            <section id='sheader'>
+
+            </section>
+        </header>
+        <div class="container">
+            <div id="map"></div>
+            <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBYdRy4bCagFm9gKw9J-7BForVmC7x9Cg8&callback=load"></script>
+
+            <table id="locations"></table>
+        </div>
+        </div>
+
+    </body>
+</html>

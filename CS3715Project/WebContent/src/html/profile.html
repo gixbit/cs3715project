@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" type="text/css" href="../css/profileStyle.css">
+		<title id='hTitle'>3715 Social Network</title>
+        <script src="../javascript/profiles.js"></script>
+        <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBYdRy4bCagFm9gKw9J-7BForVmC7x9Cg8"></script>
+	</head>
+	<div id='styles'>
+
+	</div>
+	<body class="body" onload="load()">
+        <ul class="lNavBar">
+            <li class="lNavItemLeft"><a href="/">Home</a></li>
+            <li id='aProfile' class="lNavItemLeft"><a class="active" href="/">Profile</a></li>
+            <li id='aLocation' class="lNavItemLeft"><a href="/">Location</a></li>
+            <li class="lNavItemRight"><a href="/server/admin">Server</a></li>
+        </ul>
+		<div class="main">
+			<div class="dTop">
+				<div id="dTitle">
+					<p id="pTitle"></p>
+				</div>
+				<div id="dImg">
+
+				</div>
+				<div id="dInfo">
+					<ul id='pInfo'>
+
+					</ul>
+				</div>
+			</div>
+			<div class="dFriend">
+				<div id="dSchedule">
+					<p class="pSchedule">Schedule</p>
+				</div>
+				<select id="fList"></select>
+				<button id="fRemove" onload="loadfRemove()">Remove</button>
+				<button id="fAdd" onload="loadfAdd()">Add</button>
+				<p class="fText">My Friends</p>
+				<div id="fContainer"></div>
+			</div>
+			<div id="dCopy">
+				<p class="pCopy">Copyright 2016 CS3715</p>
+			</div>
+		</div>
+	</body>
+</html>

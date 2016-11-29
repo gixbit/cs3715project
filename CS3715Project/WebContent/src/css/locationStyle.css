@@ -1,0 +1,162 @@
+html {
+    background-color: silver;
+}
+
+body {
+
+	margin: 0px;
+	color: white;
+	font-family: Lucida Console;
+}
+
+#width{
+	width: 100%;
+	max-width: 1250px;
+	margin-left: auto;
+	margin-right: auto;
+	background-color: #4F95D0;
+    border-bottom-left-radius: 7px;
+	border-bottom-right-radius: 7px;
+    border-top: 0px;
+    border-color: white;
+    border-style: solid;
+}
+
+ul.lNavBar {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    min-width: 400px;
+    background-color: #333;
+}
+li.lNavItemRight {
+    float: right;
+}
+li.lNavItemRight a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+li.lNavItemRight a:hover:not(.active) {
+    background-color: #006679;
+}
+
+li.lNavItemRight a.active {
+    background-color: #00B9F1;
+}
+li.lNavItemLeft a:hover:not(.active) {
+    background-color: #006679;
+}
+
+li.lNavItemLeft {
+    float: left;
+}
+li.lNavItemLeft a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+li.lNavItemLeft a.active {
+    background-color: #00B9F1;
+}
+
+.top section{
+    box-sizing: border-box;
+    border-bottom: 4px #333 solid;
+    border-left: 4px #333 solid;
+    border-right: 4px #333 solid;
+    margin-left: 15%;
+    margin-right: 15%;
+    padding-bottom: 53px;
+    border-radius: 0px 0px 7px 7px;
+    border-color: #EEE;
+    background-color: #316498;
+}
+
+#profilePic {
+    float: left;
+    vertical-align: middle;
+}
+
+#name {
+    padding-top: 42px;
+    display: block;
+    font-size: 48px;
+    text-align: center;
+}
+
+#map {
+    height:400px;
+    margin-top: 50px;
+    display: block;
+	margin-left: auto;
+	margin-right: auto;
+	width: 70%;
+	border-radius: 7px;
+}
+
+#userDropDown{
+    margin-left:15%;
+    width: 35%;
+    margin-bottom:20px;
+    border-bottom-left-radius: 7px;
+    border-bottom-right-radius: 7px;
+    border: transparent;
+    float: left;
+}
+
+#locDropDown{
+    margin-right:15%;
+    width:35%;
+    margin-bottom:20px;
+    border-bottom-left-radius: 7px;
+    border-bottom-right-radius: 7px;
+    border: transparent;
+    float:right;
+}
+
+#locations {
+    margin-top:5%;
+	margin-left: auto;
+    margin-right: auto;
+    width: 70%;
+    border: 5px #111 solid;
+    border-top:5px #111 solid;
+    border-left:5px #111 solid;
+    border-right:5px #111 solid;
+    border-top-left-radius: 7px;
+    border-top-right-radius: 7px;
+    padding: 5px 5px 5px 5px;
+    background-color: #333;
+}
+
+table tr, th {
+    border: 3px solid black;
+    padding: 5px;
+}
+
+.winfo {
+    color: grey;
+}
+section th, td {
+    text-align:left ;
+    border-collapse: collapse;
+	padding-left: 12px;
+	padding-right: 12px;
+}
+
+footer{
+    height: 2vh;
+    list-style-type: none;
+    margin-bottom: 0;
+    margin-top: 0;
+    padding-top: 0;
+    overflow: hidden;
+    background-color: #333;
+}

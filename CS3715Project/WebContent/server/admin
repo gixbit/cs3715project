@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>3715 Social Network</title>
+        <link rel="stylesheet" type="text/css" href="../css/landingStyle.css">
+        <script src="../javascript/admin.js"></script>
+
+    </head>
+        <ul class="lNavBar">
+            <li class="lNavItemLeft"><a href="/">Home</a></li>
+            <li class="lNavItemRight"><a class="active" href="/server/admin">Server</a></li>
+        </ul>
+    <body class='main' onload='load()'>
+
+        <div class="width">
+
+        <header class=logo>
+            <img src="../img/landing/banner.jpg">
+        </header>
+        <div id="container">
+
+            <button id='reset'>Reset All</button>
+        </div>
+
+        </div>
+    </body>
+</html>

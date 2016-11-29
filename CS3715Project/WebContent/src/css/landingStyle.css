@@ -1,0 +1,122 @@
+html {
+	background-color:silver;
+}
+
+#reset {
+    display: block;
+    width: 240px;
+    height: 60px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.main {
+	margin: 0px;
+	color: white;
+	font-family: Lucida Console;
+}
+ul.lNavBar {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    min-width: 400px;
+    background-color: #333;
+}
+li.lNavItemRight {
+    float: right;
+}
+li.lNavItemRight a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+li.lNavItemRight a:hover:not(.active) {
+    background-color: #006679;
+}
+
+li.lNavItemRight a.active {
+    background-color: #00B9F1;
+}
+li.lNavItemLeft a:hover:not(.active) {
+    background-color: #006679;
+}
+
+li.lNavItemLeft {
+    float: left;
+}
+li.lNavItemLeft a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+li.lNavItemLeft a.active {
+    background-color: #00B9F1;
+}
+
+
+.width{
+    max-width: 1324px;
+	margin:auto;
+}
+
+header img{
+	border-color: #333;
+    border-style: solid;
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+	height:auto;
+	max-width: 90%;
+	margin-left: auto;
+	margin-right: auto;
+	display: block;
+}
+
+#container p{
+    position: relative;
+    margin-left:auto;
+    margin-right:auto;
+    width: 70%;
+    left: 0%;
+    text-align: center;
+	padding-top: 20px;
+	font-size: 3vh;
+}
+
+#container {
+    background-color: #4F95D0;
+    padding-bottom: 100px;
+    padding-top: 50px;
+    margin-left:10%;
+    margin-right:10%;
+    margin-top: 0px;
+    border-bottom-left-radius: 7px;
+    border-bottom-right-radius: 7px;
+    border-width-top:;
+    border-left-style: solid;
+    border-right-style: solid;
+    border-bottom-style: solid;
+    border-color: #333333;
+}
+
+.profiles {
+    left: 50%;
+}
+#people {
+    text-align: center;
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0%;
+    width: 66%;
+}
+.preview {
+    display: inline-block;
+    margin: auto;
+	padding-left: 1px;
+    padding-right: 1px;
+}

@@ -1,0 +1,134 @@
+body {
+	background-color:#A9A9A9;
+}
+#fAdd {
+	width: 60px;
+	box-shadow: 5px 5px 8px #444444;
+}
+#fRemove {
+	width: 100px;
+	box-shadow: 5px 5px 8px #444444;
+}
+#fList {
+	box-shadow: 5px 5px 8px #444444;
+}
+.main {
+	background-color:#4F95D0;
+	box-shadow: 5px 5px 8px #444444;
+	border: lightblue solid;
+	border-radius: 0px 0px 5px 5px;
+	border-top:0px;
+	min-width: 710px;
+	max-width: 1250px;
+}
+.dTop {
+	background-color: #5bbefe;
+	border-radius: 5px;
+	border-color: white;
+	border-style: solid;
+	box-shadow: 5px 5px 8px #444444;
+}
+#pTitle {
+	font-family: Tahoma;
+	font-size: 35px;
+	color: rgb(72, 30, 197);
+}
+.pImg {
+	border-style: solid;
+	border-color: white;
+	border-width: 1px;
+}
+.pElem {
+	font-size: 20px;
+	font-family: Tahoma;
+	color: #481ec5;
+}
+#pElemLoc {
+	font-size: 20px;
+	font-family: Tahoma;
+	color: #481ec5;
+}
+#pElemLoc a {
+	color: blue;
+}
+#pElemLoc a:hover {
+	color: purple;
+}
+#pElemLoc a:hover a:visited {
+	color: purple;
+}
+#dCopy {
+	background-color: #5bbefe;
+	border-radius: 5px;
+	border-color: white;
+	border-style: solid;
+	box-shadow: 5px 5px 8px #444444;
+	color: blue;
+	font-size: 28px;
+}
+#dSchedule {
+	overflow-y: scroll;
+  	-webkit-overflow-scrolling: touch;
+	background-color: #5bbefe;
+	box-shadow: 5px 5px 8px #444444;
+	border-radius: 5px;
+	border-color: white;
+	border-style: solid;
+}
+#dSchedule ul, li, ul {
+	font-family: "Lucida Console", Monaco, monospace;
+}
+.pSchedule{
+	font-family: Tahoma;
+	font-size: 32px;
+	margin-top: 7%;
+	margin-bottom: 0px;
+	color: rgb(72, 30, 197);
+}
+.pSDay {
+	color: #00F;
+	font-size: 20px;
+
+}
+.pSDContent {
+	color: #7c00ff;
+	font-size: 15px;
+	list-style-type: initial;
+}
+.fText {
+	color: #00ffe9;
+	font-size: 30px;
+	font-family: Tahoma;
+}
+.fBody {
+	font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+	font-size: 22px;
+}
+.fBody a:hover {
+	text-decoration: underline;
+	color: purple;
+}
+.fBody a:visited a:hover {
+	text-decoration: underline;
+	color: blue;
+}
+.fBody a {
+	text-decoration: none;
+	color: blue;
+}
+.fElem {
+	background-color: #5BBEFE;
+	box-shadow: 5px 5px 8px #444444;
+	border-radius: 5px;
+	border-color: white;
+	border-style: solid;
+}
+.fInfo {
+	line-height: 1.4em;
+	font-size: 18px;
+}
+.fImg {
+	border-style: solid;
+	border-color: white;
+	border-width: 2px;
+}
