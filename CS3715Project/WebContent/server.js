@@ -1,12 +1,20 @@
+
+
 var http = require("http");
 var fs = require("fs");
 var util = require("util");
 var multiparty = require('multiparty');
 var stringify = require('stringifier');
+var tls = require('tls');
 var path = require('path');
 var ip = '127.0.0.1';
 var port = 3337;
 var data = JSON.parse(fs.readFileSync('server/data','utf8'));
+var options = {
+    key: fs.readFileSync('server-key.pem'),
+    cert: fs.readFileSync('server-crt.pem'),
+    ca: fs.readFileSync('ca-crt.pem'),
+};
 var fileExtensions = {
 	'.html':'text/html',
 	'.css':'text/css',
@@ -28,7 +36,7 @@ logTime = function(date) {
 }
 fs.writeFile('server/backup' + logTime() + '.json', JSON.stringify(data),'utf8');
 
-http.createServer(function(req, res) {
+var server = http.createServer(function(req, res) {
 	var file = __dirname + req.url;
 	if (req.url === '/favicon.ico') {
 		var f = fs.createReadStream(file);
@@ -145,7 +153,10 @@ handleGET = function(file, req, res) {
 		case 'server':
 			var server = 'server/' + weburl[2];
 			var ext = path.extname(server);
-			var type = 'text/html';
+			var type = 'text/plain';
+			if(weburl[2] == 'admin') {
+				type = 'text/html';
+			}
 			fs.exists(server, function(exists) {
 				if(exists) {
 					var f = fs.createReadStream(server);
