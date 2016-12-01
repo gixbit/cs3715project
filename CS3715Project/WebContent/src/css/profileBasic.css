@@ -1,20 +1,20 @@
 @media only all and (max-device-width: 2900px) {
     body {
-        background-color:#A9A9A9;
+        background-color: #3e3d3d;
     }
     #fAdd {
-        box-shadow: 5px 5px 8px #444444;
+        box-shadow: 5px 5px 8px #000000;
     }
     #fRemove {
-        box-shadow: 5px 5px 8px #444444;
+        box-shadow: 5px 5px 8px #000000;
     }
     #fList {
-        box-shadow: 5px 5px 8px #444444;
+        box-shadow: 5px 5px 8px #000000;
     }
     .main {
-        background-color:#4F95D0;
-        box-shadow: 5px 5px 8px #444444;
-        border: lightblue solid;
+        background-color: rgb(31, 56, 76);
+        box-shadow: 5px 5px 8px #000000;
+        border: white solid;
         border-radius: 0px 0px 5px 5px;
         border-top:0px;
         min-width: 710px;
@@ -25,12 +25,12 @@
         border-radius: 5px;
         border-color: white;
         border-style: solid;
-        box-shadow: 5px 5px 8px #444444;
+        box-shadow: 5px 5px 8px #000000;
     }
     #pTitle {
         font-family: Tahoma;
         font-size: 35px;
-        color: rgb(72, 30, 197);
+        color: rgb(255, 255, 255);
     }
     .pImg {
         border-style: solid;
@@ -41,12 +41,12 @@
     .pElem {
         font-size: 20px;
         font-family: Tahoma;
-        color: #481ec5;
+        color: #ffffff;
     }
     #pElemLoc {
         font-size: 20px;
         font-family: Tahoma;
-        color: #481ec5;
+        color: #ffffff;
     }
     #pElemLoc a {
         color: blue;
@@ -62,13 +62,13 @@
         border-radius: 5px;
         border-color: white;
         border-style: solid;
-        box-shadow: 5px 5px 8px #444444;
-        color: blue;
+        box-shadow: 5px 5px 8px #000000;
+        color: white;
         font-size: 28px;
     }
     #dSchedule {
         background-color: #5bbefe;
-        box-shadow: 5px 5px 8px #444444;
+        box-shadow: 5px 5px 8px #000000;
         border-radius: 5px;
         border-color: white;
         border-style: solid;
@@ -81,20 +81,19 @@
         font-size: 32px;
         margin-top: 7%;
         margin-bottom: 0px;
-        color: rgb(72, 30, 197);
+        color: rgb(255, 255, 255);
     }
     .pSDay {
-        color: #00F;
+        color: #000;
         font-size: 20px;
-
     }
     .pSDContent {
-        color: #7c00ff;
+        color: #000000;
         font-size: 15px;
         list-style-type: initial;
     }
     .fText {
-        color: #00ffe9;
+        color: #FFFFFF;
         font-size: 30px;
         font-family: Tahoma;
     }
@@ -116,7 +115,7 @@
     }
     .fElem {
         background-color: #5BBEFE;
-        box-shadow: 5px 5px 8px #444444;
+        box-shadow: 5px 5px 8px #000000;
         border-radius: 5px;
         border-color: white;
         border-style: solid;

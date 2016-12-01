@@ -47,7 +47,7 @@ ul.lNavBar {
     padding: 0;
     overflow: hidden;
     min-width: 400px;
-    background-color: #333;
+    background-color: #000;
     font-family: Lucida Console;
 }
 li.lNavItemRight {

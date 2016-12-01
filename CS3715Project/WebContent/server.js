@@ -10,11 +10,6 @@ var path = require('path');
 var ip = '127.0.0.1';
 var port = 3337;
 var data = JSON.parse(fs.readFileSync('server/data','utf8'));
-var options = {
-    key: fs.readFileSync('server-key.pem'),
-    cert: fs.readFileSync('server-crt.pem'),
-    ca: fs.readFileSync('ca-crt.pem'),
-};
 var fileExtensions = {
 	'.html':'text/html',
 	'.css':'text/css',
